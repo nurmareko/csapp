@@ -1,0 +1,20 @@
+Explain sequential and combinational chips; how do sequential chips
+differ from combinational chips?
+  ...
+
+Explain the notions of current, previous, and time.
+  ...
+
+Explain how clock implemented in a computer; explain tick, tock, and
+cycle.
+  ...
+
+Explain data flip-flop (DFF).
+  ...
+
+Explain Random Access Memory (RAM) and RAM addressing.
+  ...
+
+What it mean to maintain state?
+  ...
+

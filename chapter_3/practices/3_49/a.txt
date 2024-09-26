@@ -1,0 +1,32 @@
+A. Explain, in mathematical terms, the logic in the computation of S2
+   on lines 5-7. 
+   Hint: Think about the bit-level representation of -16 and its effect
+         in the andq instruction of line 6.
+
+=======================================================================
+
+5   leaq	22(, %rdi, 8), %rax	// 22 + 8n
+6   andq	$-16, %rax		// mask off lower 4-bit of %rax
+7   subq	%rax, %rsp		// Allocate space for array p
+					// (%rsp = s2)
+
+=======================================================================
+
+Decimal
+-16
+
+Hexadecimal
+0xFFFFFFFFFFFFFFF0
+
+Binary
+[11111111 11111111 11111111 11111111 11111111 11111111 11111111 11110000]
+
+=======================================================================
+
+[11111111 11111111 11111111 11111111 11111111 11111111 11111111 11110000]
+[xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx]
+and
+[xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx xxxx0000]
+
+the effect of instruction on line 6 is to mask off the lower 4-bit of
+value in register %rax

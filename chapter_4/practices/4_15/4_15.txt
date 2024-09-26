@@ -1,0 +1,11 @@
+What would be the effect of the instruction pushq %rsp according to the
+steps listed in Figure 4.20?
+
+  First the original value of %rsp will be pushed to the stack, then the
+  value of %rsp will be updated
+
+========================================================================
+Does this conform to the desired behaviour for Y86-64, as determined in
+Problem 4.7?
+
+  Yes

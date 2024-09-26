@@ -1,0 +1,24 @@
+#define M 5;
+#define N 7;
+
+long P[M][N];
+long Q[N][M];
+
+long sum_element(long i, long j) {
+	return P[i][j] + Q[j][i];
+}
+
+=======================================================================
+
+// long sum_element(long i, long j)
+// i in %rdi, j in %rsi
+
+1 sum_element:
+2   leaq	0(, %rdi, 8), %rdx	// Compute 8i
+3   subq	%rdi, %rdx		// Compute 7i
+4   addq	%rsi, %rdx		// Compute 7i + j
+5   leaq	(%rsi, %rsi, 4), %rax	// Compute 5j
+6   addq	%rax, %rdi		// Compute i + 5j
+7   movq	Q(, %rdi, 8), %rax	// Compute Xq + 8(i + 5j)
+8   addq	P(, %rdx, 8), %rax	// Compute (Xq + 8(i + 5j)) + (Xp + 8(7i + j))
+9   ret					// 

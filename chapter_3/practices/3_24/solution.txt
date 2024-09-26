@@ -1,0 +1,27 @@
+long loop_while(long a, long b)
+{
+    long result = 1;
+    while (a < b) {
+        result = result * (a + b) ;
+        a = a + 1;
+    }
+    return result;
+
+}
+
+========================================================================
+
+// long loop_while(longa, long b)
+// a in %rdi, b in, %rsi
+
+loop_while:
+  movl		$1, %eax		//   Compute result = 1
+  jmp		.L2			//   Goto test
+.L3:					// loop:
+  leaq		(%rdi, %rsi), %rdx	//   Compute temp = a+b
+  imulq		%rdx, %rax		//   Compute result *= a+b
+  addq 		$1, %rdi		//   Increment a
+.L2:					// test:
+  cmpq		%rsi, %rdi		//   Compare a : b
+  jl		.L3			//   If a < b, goto loop
+  rep; ret				//   Return

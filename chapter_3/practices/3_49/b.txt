@@ -1,0 +1,4 @@
+B. Explain, in mathematical terms, the logic in the computation of p
+   on lines 8-10.
+   Hint: You may want to refer to the discussion on division by powers
+         of 2 in Section 2.3.7.

@@ -1,0 +1,9 @@
+A. What were the values of the case labels in the switch statement?
+
+B. What cases had multiple labels in the C code?
+
+========================================================================
+
+A. -1, 0, 1, 2, 4, 5, 6, 7
+
+B. .L5, .L7

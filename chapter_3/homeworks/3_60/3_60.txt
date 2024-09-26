@@ -1,0 +1,45 @@
+# long loop(long x, int n)
+# x in %rdi, n in %esi
+loop:
+  movl %esi, %ecx	#   Compute temp1 = n
+  movl $1, %edx		#   Compute mask = 1
+  movl $0, %eax		#   Compute result = 0
+  jmp .L2		#   Goto test
+.L3:			# forloop:
+  movq %rdi, %r8	#   Compute temp2 = x
+  andq %rdx, %r8	#   Compute temp2 = temp2 & mask
+  orq %r8, %rax		#   Compute result = result | (temp2 & mask)
+  salq %cl, %rdx	#   Compute mask << n
+.L2:			# test:
+  testq %rdx, %rdx	#   Test mask
+  jne .L3		#   If != 0, goto forloop
+  rep; ret		#   return result
+
+========================================================================
+A. Which registers hold program values x, n, result and mask?
+answer: %r8, %rdx, %rax, %rdx
+
+B. What are the initial value for result and mask?
+answer: 0 and 1
+
+C. What is the test condition for mask?
+answer: mask != 0
+
+D. How does mask get updated?
+answer: mask << n
+
+E. How does result get updated?
+answer: result |= x & mask
+
+========================================================================
+F. Fill in all the missing parts of the C code.
+
+long loop(long x, int n)
+{
+	long result = 0;
+	long mask;
+	for (mask = 1; mask != 0; mask = mask << n) {
+		result |= x & mask;
+	}
+	return result;
+}

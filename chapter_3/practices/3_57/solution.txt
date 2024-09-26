@@ -1,0 +1,35 @@
+double funct3(int *ap, double b, long c ,float *dp);
+
+======================================================================
+
+// double funct3(int *ap, double b, long c, float *dp)
+// ap in %rdi, b in %xmm0, c in %rsi, dp in %rdx
+
+ 1 funct3:
+ 2   vmovss	(%rdx), %xmm1		//   Get d = *dp
+ 3   vcvtsi2sd	(%rdi), %xmm2, %xmm2	//   Get a = *ap, Convert to double
+ 4   vucomisd	%xmm2, %xmm0		//   Compare b : a
+ 5   jbe	.L8			//   If <=, goto else
+ 6   vcvtsi2ssq	%rsi, %xmm0, %xmm0	//   Convert c to float
+ 7   vmulss	%xmm1, %xmm0, %xmm1	//   Compute c * d
+ 8   vunpcklps	%xmm1, %xmm1, %xmm1	//   
+ 9   vcvtps2pd	%xmm1, %xmm0		//   Convert to double
+10   ret				//   return
+11 .L8:					// else:
+12   vaddss	%xmm1, %xmm1, %xmm1	//   Compute d * 2
+13   vcvtsi2ssq	%rsi, %xmm0, %xmm0	//   Convert c to float
+14   vadds	%xmm1, %xmm0, %xmm0	//   Compute c + d * 2
+15   vunpcklps	%xmm0, %xmm0, %xmm0	//   
+16   vcvtps2pd	%xmm0, %xmm0		//   Convert to double
+17   ret				//   return
+
+======================================================================
+double funct3(int *ap, double b, long c ,float *dp) {
+	int a = *ap;
+	float d = *dp;
+
+	if (b > a)
+		return c * d;
+	else
+		return c + d * 2;
+}

@@ -1,0 +1,14 @@
+Where should two registers be inserted to maximize the throughput of a 
+three-stage pipeline? 
+
+stage 1			stage 2			stage 3
+80+30+20 = 130ps	60+50+20 = 130ps	70+10+20 = 100ps
+
+  the register should be inserted after B and D logic.
+
+========================================================================
+What would be the throughput and latency?
+
+  throughput ≈ 7.69 GIPS
+
+  latency (130 * 3) ps = 390 ps

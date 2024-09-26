@@ -1,0 +1,21 @@
+double funct2(double w, int x, float y, long z);
+
+=======================================================================
+// double funct2(double w, int x, float y, long z)
+// w in %xmm0, x in %edi, y in %xmm1, z in %rsi
+
+1 funct2:
+2   vcvtsi2ss	%edi, %xmm2, %xmm2	// Convert x to float
+3   vmulss	%xmm1, %xmm2, %xmm1	// x * y 
+4   vunpcklps	%xmm1, %xmm1, %xmm1	// 
+5   vcvtps2pd	%xmm1, %xmm2		// Convert x*y to double
+6   vcvtsi2sdq	%rsi, %xmm1, %xmm1	// Convert z to double
+7   vdivsd	%xmm1, %xmm0, %xmm0	// w / z
+8   vsubsd	%xmm0, %xmm2, %xmm0	// x*y - w/z
+9   ret					// return %xmm0
+
+=======================================================================
+
+double funct2(double 2, int x, float y, long z) {
+	return x*y - w/z;
+}

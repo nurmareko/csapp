@@ -1,0 +1,6 @@
+C. For the following values of n and s1, trace the execution of the code
+   to determine what the resulting values would be for s2, p, e1, and e2.
+
+n	s1	s2	p	e1	e2
+5	2,065	--	--	--	--
+6	2,064	--	--	--	--

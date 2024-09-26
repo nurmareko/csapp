@@ -1,0 +1,11 @@
+Where should three registers be inserted to maximize the throughput of a
+4-stage pipeline?
+
+  A -> register -> BC -> register -> D -> register -> EF -> register
+
+========================================================================
+What would be the throughput and latency?
+
+  throughput ≈ 9.09 GIPS
+
+  latency = (110 * 4) ps = 440 ps

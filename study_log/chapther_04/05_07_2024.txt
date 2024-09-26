@@ -1,0 +1,58 @@
+What the Decode stage does?
+
+  Read up to two operands from the register file.
+
+========================================================================
+in prog1 why the two irmovq instructions and the addq instruction may
+cause data hazards?
+
+  The two irmovq instructions update the value of the registers that
+  the addq instruction will reads, therefore it may cause a data hazard
+  when any of the irmovq instruction have not complete the write back
+  stage but the addq instruction is in the decode stage. 
+
+========================================================================
+Read 4.3.3 SEQ Timing
+
+The word 'loading' is for storing data into register.
+
+The word 'writing' is for storing data into random access memory.
+
+Register is for immediate processing.
+
+RAM is for future use.
+
+The state updates occur as the clock rises.
+
+========================================================================
+Why the data memory is written when an rmmovq instruction is executed?
+
+  The rmmovq instruction write a value into the data memory.
+
+========================================================================
+Why the data memory is written when an pushq instruction is executed?
+
+  The pushq instruction write a value into the stack which is in the
+  data memory.
+
+========================================================================
+Why the data memory is written when an call instruction is executed?
+
+  The call instruction write the address of the next instruction into
+  the stack which is in the data memory.
+
+========================================================================
+What does the "state" mean?
+
+  "the state" refer to the current value that the register or random
+  access memory holds, such as the condition code register, register
+  file, data memory, or instruction memory.
+
+========================================================================
+PRINCIPLE: No reading back
+
+  The processor never needs to read back the state updated by an
+  instruction in order to complete the processing of this instruction.
+
+This mean any previous or preceding instruction from the current.
+

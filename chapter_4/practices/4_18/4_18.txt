@@ -1,0 +1,37 @@
+		Generic			Specific
+Stage		call Dest		call 0x041
+------------------------------------------------------------------------
+Fetch		icode:ifun <- M1[PC]	icode:ifun <- M1[0x037] = 8:0 
+		
+		valC <- M8[PC + 1]	valC <- M8[0x038] = 0x041
+		valP <- PC + 9		valP <- 0x037 + 9 = 0x040
+
+Decode		
+		valB <- R[%rsp]		valB <- R[%rsp] = 128
+
+Execute		valE <- valB + (-8)	valE <- 128 + (-8) = 120
+
+Memory		M8[valE] <- valP	M8[120] <- 0x040
+
+Write back	R[%rsp] <- valE		R[%rsp] <- valE	= 120
+
+PC update	PC <- valC		PC <- valC = 0x041
+
+========================================================================
+What effect would this instruction execution have on the registers, the
+PC, and the memory?
+
+  The instruction have the effect of setting the register %rsp to 120,
+  the PC to 0x041 (call target), and the memory at address 120 to 0x040
+  (return address).
+
+========================================================================
+1 0x000: 30 f2 09 00 00 00 00 00 00 00	|	irmovq $9, %rdx
+2 0x00a: 30 f3 15 00 00 00 00 00 00 00	|	irmovq $21, %rbx
+3 0x014: 61 23				|	subq %rdx, %rbx	
+4 0x016: 30 f4 80 00 00 00 00 00 00 00	|	irmovq $128, %rsp
+5 0x020: 40 43 64 00 00 00 00 00 00 00	|	rmmovq %rsp, 100(%rbx)
+6 0x02a: a0 2f				|	pushq %rdx
+7 0x02c: b0 0f				|	popq %rax
+8 0x02e: 73 40 00 00 00 00 00 00 00	|	je done
+9 0x037: 80 41 00 00 00 00 00 00 00	|	call proc

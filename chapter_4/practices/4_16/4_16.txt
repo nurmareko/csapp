@@ -1,0 +1,12 @@
+Assume the two register writes in the write-back stage for popq occur in 
+the order listed in Figure 4.20. What would be the effect of executing 
+popq %rsp?
+
+  it will first use ValE as the new value of %rsp and pop the value
+  stored at the previous value of %rsp into %rsp, ultimately performing
+  the same effect as mrmovq (%rsp), %rsp.
+========================================================================
+Does this conform to the desired behaviour for Y86-64, as determined in
+Problem 4.8?
+
+ Yes.

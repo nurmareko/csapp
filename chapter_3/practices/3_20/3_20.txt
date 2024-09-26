@@ -1,0 +1,16 @@
+#define OP / 
+
+long arith(long x) {
+	return x OP 8;
+}
+
+========================================================================
+
+# long arith(long x)
+# x in %rdi
+arith:
+  leaq 7(%rdi), %rax	# Compute v = 7 + rdi
+  testq %rdi, %rdi	# Test x
+  cmovns %rdi, %rax	# if X is nonnegative; v = x 
+  sarq $3, %rax		# Compute v >> 3
+  ret 			# 

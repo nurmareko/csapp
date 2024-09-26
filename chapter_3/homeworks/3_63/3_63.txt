@@ -1,0 +1,92 @@
+(a)
+
+long switch_prog(long x, long n) {
+	long result = x;
+	switch(n) {
+		case 61:
+		case 63:
+			result = x * 8;
+			break;
+		case 62:
+			result = x >> 3;
+			break;
+		case 64:
+			x = (x << 4) - x;
+		case 65:
+			x *= x;
+		default:
+			result = 75 + x;
+	}
+	return result;
+}
+
+-----------------------------------------------------------------------
+(b)
+
+long switch_prog(long x, long n) {
+	long result = x;
+	switch(n) {
+		case 60:
+		case 62:
+			result = x * 8;
+			break;
+		case 63:
+			result = x >> 3;
+			break;
+		case 64:
+			x = (x << 4) - x;
+		case 65:
+			x *= x;
+		default:
+			result = 75 + x;
+	}
+	return result;
+}
+
+========================================================================
+// long switch_prob(long x, long n)
+// x in %rdi, n in %rsi
+
+ 1 switch_prob:
+ 2   Compute n = n - 0x3c
+ 3   Compare n : 0x5
+ 4   If > goto default
+ 5   Goto jump_table
+ 6 L1:
+ 7   Compute result = x * 8
+ 8   return
+ 9 L2:
+10   Compute result = X >> 0x3
+11   return
+12 L3:
+13   
+14   Compute x = (x << 0x4) - x
+15 L4:
+16   compute x *= x
+17 default:
+18   Compute result = 0x4b + x
+19   return
+
+------------------------------------------------------------------------
+question: does the jump table read from left to right or right to left?
+          (endianess)
+
+(a)
+1 jump_table:
+2   4005c3 	default		CASE 60
+3   4005a1	L1		CASE 61
+4   4005aa	L2		CASE 62
+5   4005a1	L1		CASE 63
+6   4005bf	L3		CASE 64
+7   4005b2	L4		CASE 65
+
+or ????
+
+(b)
+1 jump_table:
+2   4005a1	L1		CASE 60
+3   4005c3	default		CASE 61
+4   4005a1	L1		CASE 62
+5   4005aa	L2		CASE 63
+6   4005b2	L3		CASE 64
+7   4005bf	L4		CASE 65

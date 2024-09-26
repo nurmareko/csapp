@@ -1,0 +1,12 @@
+What is the minimum number of stages that would yield a design with the 
+maximum achievable throughput? Describe this design, its throughput, and
+its latency.
+========================================================================
+
+  A -> reg -> B -> reg -> C -> reg -> D -> reg -> EF -> reg
+
+  clock cycle every 100 ps
+
+  throughput ≈ 10.00 GIPS
+
+  latency = (100 * 5) ps = 500 ps

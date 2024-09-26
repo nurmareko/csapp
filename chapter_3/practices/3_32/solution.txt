@@ -1,0 +1,15 @@
+	Instruction			State values (at beginning)
+Label	PC		Instruction	%rdi	%rsi	%rax	%rsp		*%rsp	 Description
+M1	0x400560	callq		10	---	---	0x7FFFFFFFE820	---	 Call first(10)
+
+F1	0x400548	lea		10	---	---	0x7FFFFFFFE818	0x400565 Entry of first
+F2	0x40054c	sub		 9	11	---	0x7FFFFFFFE818	0x400565 
+F3	0x400550	callq		 9	11	---	0x7FFFFFFFE818	0x400565 call second(9, 11) 
+
+L1	0x400540	mov		 9	11	---	0x7FFFFFFFE810	0x400555 Entry of second
+L2	0x400543	imul		 9	11	 99	0x7FFFFFFFE810	0x400555
+L3	0x400547	retq		 9	11	 99	0x7FFFFFFFE810	0x400555 Return 99 from last
+
+F4	0x400555	repz retq	 9	11	 99	0x7FFFFFFFE818  0x400565 Return 99 from first
+
+M2	0x400565	mov		 9	11	 99	0x7FFFFFFFE820	---

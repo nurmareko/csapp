@@ -1,0 +1,3 @@
+bool xor = (!a && b) || !(a && !b);
+
+xor is the inverse of eq 

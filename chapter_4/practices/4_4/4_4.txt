@@ -1,0 +1,91 @@
+# generated code compiled on my machine with -Og optimization 
+# int64_t rsum(int64_t *start, int64_t count)
+# start in %rcx, count in %rdx
+rsum:
+	pushq	%rbx			#   Save %rbx
+	subq	$32, %rsp		#   Allocate 32 bytes on stack
+	testq	%rdx, %rdx		#   Test count
+	jle	.L3			#   if count <= 0, goto true
+	movq	(%rcx), %rbx		#   Compute %rbx = *start
+	subq	$1, %rdx		#   Compute count -= 1
+	addq	$8, %rcx		#   Compute start += 1*8
+	call	rsum			#   Call rsum(start+1, count-1)
+	addq	%rbx, %rax		#   Compute *start + rsum(start+1, count-1)
+.L1:					# done:
+	addq	$32, %rsp		#   Deallocate 32 bytes on stack
+	popq	%rbx			#   Restore %rbx
+	ret				#   Return
+.L3:					# true:
+	movl	$0, %eax		#   Set return value = 0
+	jmp	.L1			#   Goto done
+
+------------------------------------------------------------------------
+# Y86-64 implementation
+# long rsum(long *start, long count)
+# start in %rdi, count in %rsi
+rsum:
+	pushq	%rbx			#   Save %rbx
+	irmovq	$32, %r8		#   Get constant 32
+	irmovq	$1, %r9			#   Get constant 1
+	irmovq	$8, %r10		#   Get constant 8
+	subq	%r8, %rsp		#   Allocate 32 bytes on stack
+	andq	%rsi, %rsi		#   Set CC
+	jle	.L3			#   if count <= 0, goto true
+	mrmovq	(%rdi), %rbx		#   Compute %rbx = *start
+	subq	%r9, %rsi		#   Compute count -= 1
+	addq	%r10, %rdi		#   Compute start += 1*8
+	call	rsum			#   call rsum(start+1, count-1)
+	addq	%rbx, %rax		#   Compute *start + rsum(start+1, count-1)
+.L1:					# done:
+	addq	%r8, %rsp		#   Deallocate 32 bytes on stack
+	popq	%rbx			#   Restore %rbx
+	ret				#   Return
+.L3:					# true:
+	xorq	%rax, %rax		#   Set return value = 0
+	jmp	.L1			#   goto done
+
+=======================================================================
+# generated code from the book
+# long rsum(long *start, long count)
+# start in %rdi, count in %rsi
+rsum:
+	movl	$0, %eax		#   Set return value = 0
+	testq	%rsi, %rsi		#   Test count
+	jle	.L9			#   if count <= 0, goto done
+	pushq	%rbx			#   Save %rbx
+	movq	(%rdi), %rbx		#   Compute %rbx = *start
+	subq	$1, %rsi		#   Compute count -= 1
+	addq	$8, %rdi		#   Compute start += 1*8
+	call	rsum			#   Call rsum(start+1, count-1)
+	addq	%rbx, %rax		#   Compute *start + rsum(start+1, count-1)
+	popq	%rbx			#   Restore %rbx
+.L9:					# done:
+	rep; ret			#   Return
+
+------------------------------------------------------------------------
+# Y86-64 implementation
+# long rsum(long *start, long count)
+# start in %rdi, count in %rsi
+rsum:
+	xorq	%rax, %rax		#   Set return value = 0
+	irmovq	$1, %r8			#   Get constant 1
+	irmovq	$8, %r9			#   Get constant 8
+	andq	%rsi, %rsi		#   Set CC
+	jle	.L9			#   if count <= 0, goto done
+	pushq	%rbx			#   Save %rbx
+	mrmovq	(%rdi), %rbx		#   Compute %rbx = *start
+	subq	%r8, %rsi		#   Compute count -= 1
+	addq	%r9, %rdi		#   Compute start += 1*8
+	call	rsum			#   Call rsum(start+1, count-1)
+	addq	%rbx, %rax		#   Compute *start + rsum(start+1, count-1)
+	popq	%rbx			#   Restore %rbx
+.L9:					# done:
+	ret				#   Return
+
+
+
+
+
+
+
+

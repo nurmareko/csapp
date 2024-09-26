@@ -1,0 +1,38 @@
+struct ELE {
+	long v;
+	struct ELE *p;
+};
+
+long fun(struct ELE *ptr) {
+	long sum = 0;
+	while (ptr != 0) {
+		sum += ptr->v;
+		ptr = ptr->p;
+	}
+	return sum;
+}
+
+========================================================================
+
+// long fun(struct ELE *ptr)
+// ptr in %rdi
+
+ 1 fun:
+ 2   movl	$0, %eax	//   Compute temp = 0
+ 3   jmp	.L2		//   Goto test
+ 4 .L3:				// loop:
+ 5   addq	(%rdi), %rax	//   Compute temp = temp + ptr->v
+ 6   movq	8(%rdi), %rdi	//   Compute ptr = ptr->p
+ 7 .L2:				// test:
+ 8   testq	%rdi, %rdi	//   test ptr
+ 9   jne	.L3		//   if ptr != 0, goto loop
+10   rep; ret			//   Return
+
+========================================================================
+
+B. Describe the data structure that this structure implements and the 
+   operation performed by fun.
+
+   answer: the structure ELE represent a list with v as its value and
+           p contain the rest of the list, the function fun compute the
+           sum of values in the list.

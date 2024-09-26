@@ -1,0 +1,39 @@
+UNANSWERED
+
+========================================================================
+- Describe the algorithm used to compute the product, and annotate the 
+  assembly code to show how it realizes your algorithm.
+
+- Show how the code computes the values of 𝘱ₕ and 𝘱ₗ in terms of 𝘹ₕ,  𝘹ₗ,  𝘺ₕ,
+   and 𝘺ₗ.
+
+========================================================================
+typedef __int128 int128_t;
+
+void store_prod(int128_t *dest, int64_t x, int64_t y) {
+	*dest  =  x  *  (int128_t)  y;
+}
+
+========================================================================
+representation of 128-bit oct word number:
+
+(high-order 8 bytes)	(low-order 8 bytes)
+[        %rdx        ][        %rax        ]
+
+========================================================================
+// void store_prod(int128_t *dest, int64_t x, int64_t y)
+// dest in %rdi, x in %rsi, y int %rdx
+
+ 1 store_prod:
+ 2   movq	%rdx, %rax		// Copy y to multiplicand
+ 3   cqto						// 
+ 4   movq	%rsi, %rcx		// 
+ 5   sarq	$63, %rcx			// 
+ 6   imulq	%rax, %rcx		// 
+ 7   imulq	%rsi, %rdx		// 
+ 8   addq	%rdx, %rcx		// 
+ 9   mulq	%rsi			// 
+10   addq	%rcx, %rdx		// 
+11   movq	%rax, (%rdi)	// 
+12   movq	%rdx, 8(%rdi)	// 
+13   ret						// 

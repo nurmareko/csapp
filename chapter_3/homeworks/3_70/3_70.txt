@@ -1,0 +1,110 @@
+A. What are the offsets (in bytes) of the following fields:
+  
+  e1.p		0
+  e1.y		8
+  e2.x		0
+  e2.next	8
+
+========================================================================
+B. How many total bytes does the structure require?
+  the union structure ele require 16 bytes.
+
+========================================================================
+C. The compiler generates the following assembly code for proc:
+
+# void proc (union ele *up)
+# up in %rdi
+1 proc:
+2   movq	8(%rdi), %rax	# Get *(up->e2.next)
+3   movq	(%rax), %rdx	# Get (up->e2.next)->e1.p
+4   movq	(%rdx), %rdx	# Get *((up->e2.next)->e1.p)
+5   subq	8(%rax), %rdx	# Compute *((up->e2.next)->e1.p) - (up->e2.next)->e1.y
+6   movq	%rdx, (%rdi)	# Compute up->e2.x = *((up->e2.next)->e1.p) - (up->e2.next)->e1.y
+7   ret				# return 
+
+On the basis of this information, fill in the missing expressions in the
+code for proc. Hint: Some union references can have ambiguous 
+interpretations. These ambiguities get resolved as you see where the 
+references lead. There is only one answer that does not perform any 
+casting and does not violate any type constraints.
+
+void proc (union ele *up) {
+	up->e2.x = *((up->e2.next)->e1.p) - (up->e2.next)->e1.y;
+}
+
+========================================================================
+What we know
+- up is a pointer to ele
+- up is in %rdi
+
+lets dissect instruction on line 2
+  8(%rdi) is equal to M[8 + R[%rdi]]
+
+R[%rdi] is the ele address that is stored in up
+  *up
+
+8 + R[%rdi] mean to add offset +8
+  *up + 8 this equal to up->e1.y or up->e2.next
+
+M[8 + R[%rdi]] mean to access value stored at *up + 8
+  *(*up + 8) therefore *(up->e2.next) make sense 
+
+ *(up->e2.next) is stored at %rax
+
+-----------------------------------------------------------------------
+lets dissect instruction on line 3
+
+the value in %rax in a ele union
+  (*(up->e2.next))
+
+(%rax) mean to access the first field in this union
+  - (*(up->e2.next)).e1.p = (up->e2.next)->e1.p
+  - (*(up->e2.next)).e2.x = (up->e2.next)->e2.x
+
+base on line 4 (up->e2.next)->e1.p make sense
+
+(up->e2.next)->e1.p is stored at %rdx
+
+-----------------------------------------------------------------------
+lets dissect instruction on line 4
+
+the value in %rdx is a long pointer
+  (up->e2.next)->e1.p
+
+(%rdx) mean to access the value stored in this pointer
+  *((up->e2.next)->e1.p)
+
+*((up->e2.next)->e1.p) is stored at %rdx
+
+-----------------------------------------------------------------------
+lets dissect instruction on line 5
+
+the value in %rdx is a long integer
+  *((up->e2.next)->e1.p)
+
+the value in %rax in a ele union
+  (*(up->e2.next))
+
+*(%rax) mean to access the second field in this union
+  - (*(up->e2.next)).e1.y = (up->e2.next)->e1.y
+  - (*(up->e2.next)).e2.next = (up->e2.next)->e2.next
+
+base on the computation performed (up->e2.next)->e1.y make sense
+
+the computation *((up->e2.next)->e1.p) - (up->e2.next)->e1.y is stored at %rdx
+
+-----------------------------------------------------------------------
+lets dissect instruction on line 6
+
+the value in %rdx is a long integer 
+  *((up->e2.next)->e1.p) - (up->e2.next)->e1.y
+
+the value in %rdi is a pointer to union ele
+
+(%rdi) mean to access the first field in union ele and equal to *up
+  *up is equal to up->e1.p or up->e2.x
+ 
+base on code on line 5 up->e2.x make sense
+
+the result will be
+  up->e2.x = *((up->e2.next)->e1.p) - (up->e2.next)->e1.y

@@ -1,0 +1,2 @@
+D. What alignment properties does this code guarantee for the values of
+   s2 and p?

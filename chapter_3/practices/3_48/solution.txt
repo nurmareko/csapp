@@ -1,0 +1,111 @@
+int len(char *s) {
+	return strlen(s);
+}
+
+void iptoa(char *s, long *p) {
+	long val = *p;
+	sprintf(s, "%ld", val);
+}
+
+int intlen(long x) {
+	long v;
+	char buf[12];
+	v = x;
+	iptoa(buf, &v);
+	return len(buf);
+}
+
+========================================================================
+The following show portions of the code for intlen, compiled with and
+without stack protector
+
+(a) Without protector
+
+  int intlen(long x)
+  x in %rdi
+1 intlen:
+2   subq	$40, %rsp		// Allocate 40 bytes on stack
+3   movq	%rdi, 24(%rsp)		// Compute v = x; %rsp+24
+4   leaq	24(%rsp), %rsi		// Set &v to 2nd argument
+5   movq	%rsp, %rdi		// Set buf to 1st argument
+6   call	iptoa			// Call itoa(buf, &v)
+
+
+(b) With protector
+
+  int intlen(long x)
+  x in %rdi
+1 intlen:
+2   subq	$56, %rsp		// Allocate 56 bytes on stack
+3   movq	%fs:40, %rax		// 
+4   movq	%rax, 40(%rsp)		// Copy canary to %rsp+40
+5   xorl	%eax, %eax		// Clear %rax value
+6   movq	%rdi, 8(%rsp)		// Compute v = x
+7   leaq	8(%rsp), %rsi		// Set &v to 2nd argument
+8   leaq	16(%rsp), %rdi		// Set buf to 1st argument
+9   call	ioptoa			// Call ioptoa(buf, &v)
+
+========================================================================
+A. For both versions: What are the positions in the stack frame for 
+   buf, v, and (when present) the canary value?
+
+			buf		v		canary
+Wihout protector	%rsp		%rsp+24		--
+With protector		%rsp+16		%rsp+8		%rsp+40
+
+========================================================================
+B. How does the rearranged ordering of the local variables in the
+   protected code provide greater security against a buffer overrun
+   attack?
+
+answer: in the protected code the local variable v is placed above buf
+        on the stack, therefore a buffer overrun of buf will not
+        corrupt the value of v.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

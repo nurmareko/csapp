@@ -1,0 +1,30 @@
+long fun_a(unsigned long x) {
+    long val = 0;
+    while (x != 0) {
+        val = val ^ x;
+        x = x >> 1;
+    }
+    return val & 1;
+}
+
+========================================================================
+
+// long fun_a(unsigned long x)
+// x n %rdi
+
+fun_a:
+  movl		$0, %eax	//   Compute val = 0
+  jmp		.L5		//   Goto test
+.L6:				// loop:
+  xorq		%rdi, %rax	//   Compute val = val ^ x
+  shrq		%rdi		//   Shift right by 1
+.L5:				// test:
+  test		%rdi, %rdi	//   Test x : 0
+  jne		.L6		//   If x != 0, goto loop
+  andl		$1, %eax	//   Compute value = value & 1
+  ret				//   return
+
+========================================================================
+
+A. Determine what loop translation method was used.
+aswer: jump to middle.

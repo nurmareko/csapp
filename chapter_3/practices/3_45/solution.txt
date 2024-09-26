@@ -1,0 +1,54 @@
+Struct {
+	char	*a
+	short	 b
+	double	 c
+	char	 d
+	float	 e
+	char	 f
+	long	 g
+	int	 h
+} rec;
+
+========================================================================
+A. What are the byte offsets of all the fields in the structure?
+
+because the largest data size we are using is 8 bytes then we follow
+8 bytes alingment.
+
+offset		field		size in byte
+0-7		a		8
+8-9		b		2
+10-15		padding		6
+16-23		c		8
+24		d		1
+25-27		padding		3
+28-31		e		4
+32		f		1
+33-39		padding		7
+40-47		g		8
+48-51		h		4
+52-55		padding		4
+
+=========================================================================
+B. What is the total size of the structure?
+
+answer: 56 bytes
+
+=========================================================================
+C. Rearrange the fields of the structure to minimize wasted space,
+   and then show the byte offsets and total size for the rearranged
+   structure.
+
+offset		field		size in byte
+0-7		a		 8
+8-15		c		 8
+16-23		g		 8
+24-27		e		 4
+28-31		h		 4
+32-33		b		 2
+34		d		 1
+35		f		 1
+36-39		paddig		 4
+
+			total	40 bytes
+

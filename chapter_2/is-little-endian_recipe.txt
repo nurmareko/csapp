@@ -1,0 +1,49 @@
+1 byte = 8 bits
+
+a hexadecimal digit have 4-bit representation
+
+example value = 123 = 0x7B
+
+word size	bit pattern example in hexadecimal (big endian)
+1 byte		7B
+2 byte		00 7B
+3 byte		00 00 7B
+4 byte		00 00 00 7B
+5 byte		00 00 00 00 7B
+
+in order to have endianess a machine must at least have more than
+1-byte word size.
+
+how can the endianess of a machine determined?
+method 1
+- we need example value to work with
+- collect digit of the value as hexadecimal and padded with zero
+  accordingliy
+- we look at the byte level of the example value then collect its
+  hex pattern
+- then compare if they are the same arangement
+
+method 2
+- we need example value to work with
+- we look at the byte level of the example value then collect its
+  hex pattern
+- built a value from that patern
+- compare with the original given value
+
+method 3
+- we need example value such the least significant byte is unique
+- get the 2 rightmost hexadecimal digit of the example value
+- get the first byte pattern of the example value
+- then compare them
+
+
+
+
+
+
+
+
+
+
+
+ 

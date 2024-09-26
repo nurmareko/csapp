@@ -1,0 +1,26 @@
+double fcvt2(int *ip, float *fp, double *dp, long l) 
+{
+	int i = *ip; float f = *fp; double d = *dp;
+	*ip = (int)	d;
+	*fp = (float)	i;
+	*dp = (double)	l;
+	return (double)	f;
+}
+
+========================================================================
+// double fcvt2(int *ip, float *fp, double *dp, long l)
+// ip in %rdi, fp in %rsi, dp in %rdx, l in %rcx
+// result returned in %xmm0
+
+ 1 fcvt2:
+ 2   movl	(%rdi), %eax		// Get i = *ip
+ 3   vmovss	(%rsi), %xmm0		// Get f = *fp
+ 4   vcvttsd2si	(%rdx), %r8d		// Get d = *dp and convert to int
+ 5   movl	%r8d, (%rdi)		// Store at ip
+ 6   vcvtsi2ss	%eax, %xmm1, %xmm1	// Convert i to float
+ 7   vmovss	%smm1, (%rsi)		// Store at fp
+ 8   vcvtsi2sdq	%rcx, %xmm1, %xmm1	// Convert l to double
+ 9   vmovsd	%xmm1, (%rdx)		// Store at dp
+10   vunpcklps	%xmm0, %xmm0, %xmm0	// Convert f to double pt1
+11   vcvtps2pd	%xmm0, %xmm0		// Convert f to double pt2
+12   ret				// return f

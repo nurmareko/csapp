@@ -1,0 +1,4 @@
+form		min	max
+denormalized	2^-149	2^-127
+normalized	2^-126	2^127
+

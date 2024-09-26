@@ -1,0 +1,16 @@
+positive overflow
+- x msb is 0
+- y msb is 0
+- x+y msb is 1
+- return 01...1
+
+negative overflow
+- x msb is 1
+- y msb is 1
+- x+y msb is 0
+- return 10...0
+
+no overflow
+- [x, y msb is 1, 0] or [x, y msb is 0, 1]
+- return x+y
+

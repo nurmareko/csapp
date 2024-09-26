@@ -1,0 +1,88 @@
+void switcher(long a, long b, long c, long *dest)
+{
+    long val;
+    switch(a) {
+    case 5;
+        c = b ^ 0xF;	/* Case A */
+        /* Fall through */
+    case 0;
+        val = 122 + c;	/* Case B */
+        break;
+    case 2;		/* Case C */
+    case 7;		/* Case D */
+        val = (c + b) << 2;
+        break;
+    case ...;		/* Case E */	// BROKEN
+        val = ...;
+        break;
+    default:
+        val = b;
+    }
+    *dest = val;
+}
+
+========================================================================
+(a) Code
+
+// void switcher(long a, long b, long c, long *dest)
+// a in %rdi, b in %rsi, c in %rdx, dest in %rcx
+
+ 1 switcher:
+ 2   cmpq	$7, %rdi		// 
+ 3   ja		.L2			// 
+ 4   jmp	*.L4(, %rdi, 8)		// 
+ 5   .section		.rodata		// 
+ 6 .L7:					// Case A
+ 7   xorq	$15, %rsi		//
+ 8   movq	%rsi, %rdx		//   Compute c = b ^ 0xF
+ 9 .L3:					// Case ...
+10   leaq	112(%rdx), %rdi		//   val = 122 + c
+11   jmp	.L6			//   Goto break
+12 .L5:					// Case C, D
+13   leaq	(%rdx, %rsi), %rdi	//
+14   salq	$2, %rdi		//   Compute val = c + b << 2
+15   jmp	.L6			//   Goto break
+16 .L2:					// default
+17   movq	%rsi, %rdi		//   Compute val = b
+18 .L6:					// break
+19   movq	%rdi, (%rcx)		//   Compute *dest = val
+20   ret				// 
+
+========================================================================
+(b) jump table
+
+ 1 .L4:
+ 2   .quad	.L3
+ 3   .quad	.L2
+ 4   .quad	.L5
+ 5   .quad	.L2
+ 6   .quad	.L6
+ 7   .quad	.L7
+ 8   .quad	.L2
+ 9   .quad	.L5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

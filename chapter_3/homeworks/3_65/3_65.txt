@@ -1,0 +1,43 @@
+1 .L6:				# loop:
+2   movq	(%rdx), %rcx	#   Compute t = A[i][j]
+3   movq	(%rax), %rsi	#   Get A[j][i]
+4   movq	%rsi, (%rdx)	#   Compute A[i][j] = A[j][i]
+5   movq	%rcx, (%rax)	#   Compute A[j][i] = t
+6   addq	$8, %rdx	#   
+7   addq	$120, %rax	#   
+8   cmpq	%rdi, %rax	#   
+9   jne		.L6		#   
+
+========================================================================
+what does the instruction on line 6 does?
+  the value on register %rdx is pointer to array element A[i][j],
+  the instruction add 8 to this pointer and save it on register %rdx,
+  this effectively compute A[i][j++]
+
+how adding 8 to register %rdx compute A[i][j++]?
+  we know that array A is an array of array of long therefore the element
+  size is 8 bytes, the effect of adding 8 to a pointer of this array is
+  the same as A[i][j++]
+
+what does the instruction on line 7 does?
+  the value on register %rax is pointer to array element A[j][i],
+  the instruction add 120 to this pointer and save it on %rax,
+  this effectively compute A[j++][i]
+
+how adding 120 to register %rax compute A[j++][i]?
+  we know that array A is an array of array of long therefore the element
+  size is 8 bytes, the effect of adding 120 to a pointer of this array is
+  the same as M*8 = A[j++][i]
+
+========================================================================
+A. Which register holds a pointer to array element A[i][j]?
+
+answer: %rdx
+
+B. Which register holds a pointer to array element A[j][i]?
+
+answer: %rax
+
+C. What is the value of M?
+
+answer: 120/8 = 15

@@ -1,0 +1,71 @@
+			!!! UNSOLVED !!!
+
+
+
+long vframe(long n, long idx, long *q) {
+	long i;
+	long *p[n];
+	p[0] = &i;
+	for (i = 0; i < n; i++)
+		p[i] = q;
+	return *p[idx];
+}
+
+========================================================================
+# long vframe(long n, long idx, long *q)
+# n in %rdi, idx in %rsi, q in %rdx
+# Only portions of code shown
+ 1 vframe:
+ 2   pushq	%rbp			#   Save old %rbp
+ 3   movq	%rsp, %rbp		#   Set frame pointer
+ 4   subq	$16, %rsp		#   Allocate space for i (%rsp = s1)
+ 5   leaq	22(, %rdi, 8), %rax
+ 6   andq	$-16, %rax
+ 7   subq	%rax, %rsp		#   Allocate space for array p (%rsp = s2)
+ 8   leaq	7(%rsp), %rax
+ 9   shrq	$3, %rax
+10   leaq	0(, %rax, 8), %r8	#   Set %r8 to &p[0]
+11   movq	%r8, %rcx		#   Set %rcx to &p[0] (%rcx = p)
+
+	. . .
+
+# Code for initialization loop
+# i in %rac and on stack, n in %rdi, p in %rcx, q in %rdx
+12 .L3:					# loop:
+13   movq	%rdx, (%rcx, %rax, 8)	#   Set p[i] to q
+14   addq	$1, %rax		#   Increment i
+15   movq	%rax, -8(%rbp)		#   Store on stack
+16 .L2:
+17   movq	-8(%rbp), %rax		#   Retrieve i from stack
+18   cmpq	%rdi, %rax		#   Compare i:n
+19   jl		.L3			#   If <, goto loop
+
+	. . .
+
+# code for function exit
+20   leave				#   Restore %rbp and %rsp
+21   ret				#   Return
+
+========================================================================
+A. Explain, in mathematical terms, the logic in the computation of S2
+   on lines 5-7. 
+   Hint: Think about the bit-level representation of -16 and its effect
+         in the andq instruction of line 6.
+
+========================================================================
+B. Explain, in mathematical terms, the logic in the computation of p
+   on lines 8-10.
+   Hint: You may want to refer to the discussion on division by powers
+         of 2 in Section 2.3.7.
+
+========================================================================
+C. For the following values of n and s1, trace the execution of the code
+   to determine what the resulting values would be for s2, p, e1, and e2.
+
+n	s1	s2	p	e1	e2
+5	2,065	--	--	--	--
+6	2,064	--	--	--	--
+
+========================================================================
+D. What alignment properties does this code guarantee for the values of
+   s2 and p?

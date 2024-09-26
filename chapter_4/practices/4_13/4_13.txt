@@ -1,0 +1,23 @@
+		Generic				Specific
+Stage		irmovq V, rB			irmovq $128, %rsp
+------------------------------------------------------------------------------
+Fetch		icode:ifun <- M1[PC]		icode:ifun <- M1[0x016] = 3:0
+		rA:rB <- M1[PC + 1]		rA:rB <- M1[0x017] = f:4
+		valC <- M8[PC + 2]		valC <- M8[0x018] = 128
+		valP <- PC + 10			valP <- 0x016 + 10 = 0x020
+
+Decode
+
+Execute		valE <- 0 + valC		valE <- 0 + 128 = 128
+
+Memory
+
+Write back	R[rB] <- valE			R[%rsp] <- valE = 128
+
+PC update	PC <- valP			PC <- valP = 0x020
+
+==============================================================================
+0x000: 30 f2 09 00 00 00 00 00 00 00	|	irmovq $9, %rdx
+0x00a: 30 f3 15 00 00 00 00 00 00 00	|	irmovq $21, %rbx
+0x014: 61 23				|	subq %rdx, %rbx	
+0x016: 30 f4 80 00 00 00 00 00 00 00	|	irmovq $128, %rsp

@@ -1,0 +1,23 @@
+A. the expression will yields 0 when:
+   - x is TMIN, and y is any value other than TMIN
+   - x is positive number, and y is TMIN
+
+B. the expression always yields 0 because:
+   ((x + y) << 4) + y - x == ((x + y) * 16) + y - x
+                          == (16x + 16y) + y - x
+			  == 16x - x + 16y + y
+			  == 15x + 17y
+
+C. the expression always yields 0 because:
+   ~x + ~y + 1 == ~x - y
+	       == -x - 1 - y
+	       == -(x + y) - 1
+	       == ~(x + y)
+
+D. the expression always yileds 0 because the expression on the right
+   hand side will implicitly cast to unsgined value, and because the
+   the bit pattern of ux-uy and x-y is the same.
+
+E. the expression always yields 0 because when the two right most bits
+   of x is not [00] we will get value between (x-3) to (x-1), or when 
+   the two right most bits of x is [00] we get x back as the final value.

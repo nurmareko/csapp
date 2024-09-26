@@ -1,0 +1,25 @@
+*u += a;	// *u = *u + a;
+*v += b;	// *v = *v + b;
+return sizeof(a) + sizeof(b);
+
+========================================================================
+int procprob(int a, char b, long *u, char *v)
+// a in %edi, b in %si, u in %rdx, v in %rcx
+
+1 procprob:
+2   movslq	%edi, %rdi	// int -> long; 'a' is 1st
+3   addq	%rdi, (%rdx)	// long; *u = *u + a; u is 3rd
+4   addb	%sil, (%rcx)	// char; *v = *v + b; b is 2nd, v is 4th
+5   movl	$6, %eax	// int; return = 6
+6   ret				// return 4 + 2; a is int, b is short
+
+========================================================================
+int procprob(int b, short a, long *v, char *u)
+// b in %edi, a in %si, v in %rdx, u in %cl
+
+1 procprob:
+2   movslq	%edi, %rdi	// int -> long; b in %rdi
+3   addq	%rdi, (%rdx)	// long; *v = *v + b
+4   addb	%sil, (%rcx)	// char; *u = *u + a
+5   movl	$6, %eax	// int; return = 6
+6   ret				// return 2 + 4; b is int, a is short

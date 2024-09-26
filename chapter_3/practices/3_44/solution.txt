@@ -1,0 +1,73 @@
+For each of the following structure declarations, determine the offset 
+of each field, the total size of the structure, and its alignment
+requirement for x86-64:
+
+A. struct P1 { int i; char c; int j; char d; };
+B. struct P2 { int i; char c; char d; long j; };
+C. struct P3 { short w[3]; char c[3] };
+D. struct P4 { short w[5]; char *c[3] };
+E. struct P5 { struct P3 a[2]; struct P2 t };
+
+========================================================================
+struct P1 { int i; char c; int j; char d; };
+
+offset		field		size
+0-3		i		 4 bytes
+4		c		 1 byte
+5-7		padding		 3 bytes
+8-11		j		 4 bytes
+12		d		 1 byte
+13-15		padding		 3 bytes
+
+			total	16 bytes; alignment 4 bytes
+========================================================================
+struct P2 { int i; char c; char d; long j; };
+
+offset		field		size
+0-3		i		 4 bytes
+4		c		 1 byte
+5		d		 1 byte
+6-7		padding		 2 bytes
+8-15		j		 8 bytes
+
+			total	16 bytes; alignment 8 bytes 
+========================================================================
+struct P3 { short w[3]; char c[3] };
+
+offset		field		size
+0-1		w[0]		 2 bytes
+2-3		w[1]		 2 bytes
+4-5		w[2]		 2 bytes
+6		c[0]		 1 byte
+7		c[0]		 1 byte
+8		c[0]		 1 byte
+9		padding		 1 byte
+
+			total	10 bytes; alignment 2 bytes
+========================================================================
+struct P4 { short w[5]; char *c[3] };
+
+offset		field		size
+0-1		w[0]		 2 bytes
+2-3		w[1]		 2 bytes
+4-5		w[2]		 2 bytes
+6-7		w[3]		 2 bytes
+8-9		w[4]		 2 bytes
+10-15		padding		 6 bytes
+16-23		c[0]		 8 bytes
+24-31		c[1]		 8 bytes
+32-39		c[2]		 8 bytes
+
+			total	40 bytes; alignment 8 bytes
+========================================================================
+struct P5 { struct P3 a[2]; struct P2 t };
+
+
+
+offset		field		size
+0-9		a[0]		10 bytes
+10-19		a[1]		10 bytes
+20-23		padding 	 4 bytes
+24-39		t		16 bytes
+
+			total	40 bytes; aligment 8 bytes

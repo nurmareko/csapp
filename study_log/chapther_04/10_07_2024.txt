@@ -1,0 +1,10 @@
+Explain the clock cycle.
+
+  ...
+
+========================================================================
+read nand2tetris chapter 3, to understand how time is implemented in
+a computer.
+
+  ...
+  

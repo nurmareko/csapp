@@ -1,0 +1,37 @@
+long test(long x, long y, long z) {
+    long val = x + y + z;
+    if (x < -3) {
+        if (y < z)
+            val = x * y;
+        else
+            val = y * z;
+    } else if (x > 2)
+        val = x * z;
+    return val;
+}
+
+========================================================================
+
+// long test(long x, long y, long z)
+// x in %rdi, y in %rsi, z in %rdx
+test:
+  leaq	(%rdi,rsi), %rax	// val = x + y
+  addq	%rdx, %rax		// val = val + z
+  cmpq	$-3, %rdi		// compare x : -3
+  jge	.L2			// goto .L2 if x >= -3
+  cmpq	%rdx, %rsi		// compare y : z
+  jge	.L3			// goto .L3 if y >= z
+  movq	%rdi, %rax		// value = x
+  imulq	%rsi, %rax		// value = value * y
+  ret				// 
+.L3:				// 
+  movq	%rsi, %rax		// value = y
+  imulq	%rdx, %rax		// value = value * z
+  ret				// 
+.L2:				// 
+  cmpq	$2, %rdi		// compare x : 2
+  jle	.L4			// goto .L4 if x <= 2
+  movq	%rdi, %rax		// value = x
+  imulq	%rdx, %rax		// value = value * z
+.L4:				// 
+  rep; ret			// 

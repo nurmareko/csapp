@@ -1,0 +1,33 @@
+B. Fill in the missing exressions in the C code shown above.
+
+long rfun(unsigned long x) {
+	if (x == 0)
+		return 0;
+	unsigned long nx = x >> 2;
+	long rv = rfun(nx);
+	return rv + x;
+}
+
+========================================================================
+
+// long rfun(unsigned long x)
+// x in %rdi
+ 1 rfun:
+ 2   pushq	%rbx		//   Save initial value of %rbx
+ 3   movq	%rdi, %rbx	//   Move x to %rbx
+ 4   movl	$0, %eax	//   Compute return = 0
+ 5   testq	%rdi, %rdi	//   Test x : 0
+ 6   je		.L2		//   if x = 0, Goto done
+ 7   shrq	$2, %rdi	//   Compute x = x >> 2, logical
+ 8   call 	rfun		//   call rfun(nx)
+ 9   addq	%rbx, %rax	//   Compute rfun(nx) + x; return value
+10 .L2:				// done:
+11   popq	%rbx		//   Restore initial value of %rbx
+12   ret			//   return rfun(nx) + x
+
+========================================================================
+
+A. What value does rfun store in the callee-saved register %rbx
+
+aswer: the initial value of x
+

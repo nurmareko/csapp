@@ -1,0 +1,31 @@
+typedef struct {
+	int x[A][B]; 	// Unknown constants A and B
+	long y;		// %rdi + 184
+} str1;
+
+typedef struct {
+	char array[B];
+	int t;		// %rsi + 8
+	short s[A];
+	long u;		// %rsi + 32
+} str2;
+
+void setVal(str1 *p, str2 *q) {
+	long v1 = q->t;
+	long v2 = q->u;
+	p->y = v1+v2;
+}
+
+=======================================================================
+# void setVal(str1 *p, str2 *q)
+# p in %rdi, q in %rsi
+1 setVal:
+2   movslq	8(%rsi), %rax	# Get q->t, convert to long
+3   addq	32(%rsi), %rax	# Compute v1 + v2
+4   movq	%rax, 184(%rdi)	# Compute p->y = v1+v2
+5   ret				# return
+
+=======================================================================
+What are the values of A and B? (The solution is unique.)
+
+  ...

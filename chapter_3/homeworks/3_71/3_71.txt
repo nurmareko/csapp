@@ -1,0 +1,29 @@
+#define SIZE 8
+
+void good_echo(void);
+
+void good_echo(void) {
+	char buf[SIZE];
+	if (fgets(buf, SIZE, stdin) != NULL)
+		puts(buf);
+	else 
+		return;
+}
+
+========================================================================
+good_echo criteria
+  - reads a line from standard input and writes it to standard output
+  - should work for an input line of arbitrary length
+  - may use the library function fgets
+  - make sure your function works correctly even when the input lines
+    requires more space than you have allocated for your buffer
+  - check for error conditions and return when one is encountered
+
+========================================================================
+how echo from the text book fail good_echo criteria?
+  when the input length is greater than the allocated buffer the
+  function may raise an error.
+
+how can we fix this?
+  we can make so the function only store up to buffer size including
+  terminating character and ignore the rest.

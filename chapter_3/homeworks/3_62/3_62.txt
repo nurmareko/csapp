@@ -1,0 +1,61 @@
+// Enumerated type creates set of constants numbered 0 and upward
+// typedef enum {MODE_A, MODE_B, MODE_C, MODE_D, MODE_E} mode_t;
+ 
+long switch3(long *p1, long *p2, mode_t action)
+{
+	long result = 0;
+	switch(action) {
+		case MODE_A:
+			result = *p2;
+			*p2 = *p1;
+			break;
+		case MODE_B:
+			result = *p1 + *p2;
+			*p1 = result;
+			break;
+		case MODE_C:
+			*p1 = 59;
+			result = *p2;
+			break;
+		case MODE_D:
+			*p1 = *p2;
+		case MODE_E:
+			result = 27;
+			break;
+		default:
+			result = 12;
+	}
+	return result;
+}
+
+========================================================================
+# long switch3(long *p1, long *p2, mode_t action)
+# p1 in %rdi, p2 in %rsi, action in %edx
+
+.L8:			# MODE_E:
+  mov	$27, %eax	#   Get 27
+  ret			#   Return 27
+.L3:			# MODE_A:
+  movq	(%rsi), %rax	#   Compute ret_val = *p2
+  movq	(%rdi), %rdx	#   Compute val1 = *p1
+  movq	%rdx, (%rsi)	#   Compute *p2 = val1
+  ret 			#   Return val2
+.L5:			# MODE_B:
+  movq	(%rdi), %rax	#   
+  addq	(%rsi), %rax	#   Compute ret_val = *p1 + *p2
+  movq	%rax, (%rdi)	#   Compute *p1 = ret_val
+  ret			#   Return ret_val
+.L6:			# MODE_C:
+  movq	$59, (%rdi)	#   Compute *p1 = 59
+  movq	(%rsi), %rax	#   compute ret_val = *p2
+  ret			#   Return *p2
+.L7:			# MODE_D:
+  movq	(%rsi), %rax	#   
+  movq	%rax, (%rdi)	#   compute *p1 = *p2
+  movl	$27, %eax	#   Compute ret_val = 27
+  ret			#   Return 27
+.L9:			# default:
+  movl $12, %eax	#   
+  ret			#   Return 12
+
+

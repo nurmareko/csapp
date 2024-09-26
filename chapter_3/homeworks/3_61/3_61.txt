@@ -1,0 +1,54 @@
+long cread(long *xp) {
+	return (xp ? *xp : 0);
+}
+------------------------------------------------------------------------
+# long cread(long *xp)
+# Invalid implementation of function cread
+# xp in %rdi
+cread:
+  movq (%rdi), %rax	# v = *xp	<-- when xp is a null pointer 
+  testq %rdi, %rdi	# Test xp	    this will raise an error
+  movl $0, %edx		# Set ve = 0
+  cmove %rdx, %rax	# If x==0, v = ve
+  ret			# Return v
+
+question: why does the value of ve is set after testq expression and
+          not before? (inconsistency)
+========================================================================
+long cread_alt(long *xp) {
+	return (!xp ? 0 : *xp);
+}
+------------------------------------------------------------------------
+# long cread_alt(long *xp)
+# xp in %rdi
+cread_alt:
+  movq $0, %rax		# v = then-expr;
+  testq %rdi, %rdi	# t = test-expr;
+  cmovne (%rdi), %rax	# if (!t) v = ve;
+
+# this way the expression *xp will only evaluated when xp is not null
+  pointer.
+# note: we can omit the initialization of the else-expr becase we can
+        get ve value directly from (%rdi).
+========================================================================
+conditional movement of data asbract code:
+1 v = then-expr;
+2 ve = else-expr;
+3 t = test-expr;
+4 if (!t) v = ve;
+------------------------------------------------------------------------
+how does conditional transfer of data work in this case?
+answer: it will first compute the two possible outcome let say v
+        (true vaue) and ve (false value) and initalize the return
+        value with v, then it check for the condition, if the
+        condition is false it will rewrite the return value with the
+	ve.
+
+why cread cannot use conditional data transfer?
+answer: when xp is a null pointer it will cause the code to dereference
+        null pointer for the value of ve which will raise an error
+
+how can we write cread_alt so it can be compiled to use conditional 
+data transfer?
+answer: use !xp as the test expression and reverse the results value. 
+

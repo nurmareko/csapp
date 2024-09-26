@@ -1,0 +1,9 @@
+A. (x < y) == (-x > -y)
+this expression will not always yield 1
+
+for TMIN = x, TMIN < y <= TMAX
+(TMIN < y) == (-TMIN > -y) ->	1 == 0	->	0
+
+for 0 < x >= TMAX, TMIN = y
+(x < TMIN) == (-x > -TMIN) ->	0 == 1	->	0
+rfd

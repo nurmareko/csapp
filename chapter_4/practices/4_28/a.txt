@@ -1,0 +1,27 @@
+Inserting a single register gives a two-stage pipeline. Where should the
+register be inserted to maximize throughput?
+
+  we can have 5 different arrangement for two-stage pipeline
+
+	stage 1				stage 2
+  A	(80+20) ps = 100 ps		(30+60+50+70+10+20) ps = 240 ps
+	
+  B	(80+30+20) ps = 130 ps		(60+50+70+10+20) ps = 210 ps
+
+  C	(80+30+60+20) ps = 190 ps	(50+70+10+20) ps = 150 ps
+
+  D	(80+30+60+50+20) ps = 240 ps	(70+10+20) ps = 100 ps
+
+  E	(80+30+60+50+70+20) ps = 310 ps	(10+20) ps = 30 ps
+
+  to maximize throughput we want arrangement that have smallest
+  difference between stage 1 and stage 2.
+  
+  the register should be inserted after the combinational logic C.
+
+========================================================================
+What would be the throughput and latency?
+
+  throughput ≈ 5.26 GIPS
+
+  latency = 190 ps * 2 = 380 ps

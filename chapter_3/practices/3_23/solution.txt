@@ -1,0 +1,43 @@
+long dw_loop(long x) {
+    long y = x*x;
+    long *p = &x;
+    long n = 2*x;
+    do {
+        x += y;
+        (*p)++;
+        n--;
+    } while (n > 0);
+    return x;
+}
+
+========================================================================
+
+// long dw_loop(long x)
+// x initially in %rdi
+dw_loop:
+  movq		%rdi, %rax		//   Set var_1 = x 
+  movq		%rdi, %rcx		//   Set var_2 = x 
+  imulq		%rdi, %rcx		//   Set var_2 = var_2 * x
+  leaq		(%rdi, %rdi), %rdx	//   Set var_3 = X + X
+.L2:					// loop:
+  leaq		1(%rcx, %rax), %rax	//   Set var_1 = 1 + var_2 + var_1
+  subq		$1, %rdx		//   var_3 = var_3 - 1
+  testq		%rdx, %rdx		//   Test for var_3
+  jg		.L2			//   If >, goto loop
+  rep; ret				//   Return
+
+========================================================================
+
+// long dw_loop(long x)
+// x initially in %rdi
+dw_loop:
+  movq		%rdi, %rax		//   Copy x to %rax 
+  movq		%rdi, %rcx		//   
+  imulq		%rdi, %rcx		//   Compute y = x*x
+  leaq		(%rdi, %rdi), %rdx	//   Compute n = 2*x
+.L2:					// loop:
+  leaq		1(%rcx, %rax), %rax	//   compute x += y + 1
+  subq		$1, %rdx		//   Decrement n
+  testq		%rdx, %rdx		//   Test n
+  jg		.L2			//   If > 0, goto loop
+  rep; ret				//   Return

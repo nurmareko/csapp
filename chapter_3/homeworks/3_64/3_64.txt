@@ -1,0 +1,66 @@
+long A[R][S][T];
+
+long store_ele(long i, long j, long k, long *dest)
+{
+	*dest = A[i][j][k];
+	return sizeof(A);
+
+}
+
+========================================================================
+
+# long store_ele(long i, long j, long k, long *dest)
+# i in %rdi, j in %rsi, k in %rdx, dest in %rcx
+store_ele:
+  leaq	(%rsi, %rsi, 2), %rax	# Compute j + j * 2 = 3j
+  leaq	(%rsi, %rax, 4), %rax	# Compute j + 3j * 4 = 13j
+  movq	%rdi, %rsi		# Get i
+  salq	$6, %rsi		# Compute i << 6 = 64i
+  addq	%rsi, %rdi		# Compute i + 64i = 65i
+  addq	%rax, %rdi		# Compute 65i + 13j
+  addq	%rdi, %rdx		# Compute k + 65i + 13j
+  movq	A(, %rdx, 8), %rax	# Compute Xa + 8(k + 65i + 13j)
+  movq	%rax, (%rcx)		# Compute *dest = Xa + 8(k + 65i + 13j)
+  movl	$3640, %eax		# Set return value to 3640
+  ret				# Return 3640
+
+========================================================================
+
+A. Extend Equation 3.1 from two dimensions to three to provide a formula
+   for the location of array element A[i][j][k].
+
+3 layers nested array
+------------------------------------------------------------------------
+// long A[R][S][T];
+typedef long level_3[T];
+typedef level_3 level_2[S];
+level_2 level_1[R];
+
+array		element	count	element size	total size
+level_3		T		L		L * T
+level_2		S		L * T		L * T * S
+level_1		R		L * T * S	L * T * S * R
+
+&A[i][j][k] = Xa + [(L* T * S) * i] + [(L * T) * j] + (L * k)
+	    = Xa + L[(T * S * i) + (T * j) + k]
+------------------------------------------------------------------------
+T D[R][S][T];
+
+array element A[i][j][k] is at memory address
+
+	&A[i][j][k] = Xa + L[(T * S * i) + (T * j) + k]
+
+========================================================================
+B. use your reverse engineering skills to determine the values of R, S,
+   and T based on the asembly code.
+
+  Xa + L(T * S * i +  T * j + k)
+= Xa + 8( 65   * i + 13 * j + k)
+
+T = 13
+S = 65/T = 5
+R = 3640/(L * T * S) = 7
+
+
+
+

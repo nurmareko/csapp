@@ -1,0 +1,90 @@
+- Procedure get_line is called with return address 0x400776
+- register %rbx equal to 0x123456789ABCDEF
+- you type in the string 0123456789012345678901234
+
+- The program terminates with a segmentation fault
+- the error occurs during the execution of the ret instruction of 
+  get_line
+
+=======================================================================
+(a) C code
+
+// This is very low-quality code.
+// It is intended to illustrate bad programming practices.
+// See Practice Problem 3.46.
+
+char *get_line()
+{
+	char buf[4];
+	char *result;
+	gets(buf);
+	result = malloc(strlen(buf));
+	strcpy(result, buf);
+	return result;
+}
+
+=======================================================================
+(b) Disassembly up through call to gets
+
+//	char *get_line()
+1 0000000000400720 <get_line>:
+2   400720:  53				push	%rbx
+3   400721:  48  83  ec  10		sub	$0x10, %rsp
+//	Diagram stack at this point
+4   400725:  48  89  e7			mov	%rsp, %rdi
+5   400728:  e8  73  ff  ff  ff		callq	4006a0 <gets>
+//	Modify diagram to show stack contents at this point
+
+=======================================================================
+A
+******************************
+00  00  00  00  00  40  07  76	// Return address
+01  23  45  67  89  AB  CD  EF	// %rbx
+--  --  --  --  --  --  --  --	  
+--  --  --  --  --  --  --  --	// %rsp  
+******************************
+
+=======================================================================
+B. Modify your diagram to show the effect of the call to gets (line 5)
+
+******************************
+00  00  00  00  00  40  00  34  // Return address
+33  32  31  30  39  38  37  36	// %rbx
+35  34  33  32  31  30  39  38	 
+37  36  35  34  33  32  31  30	// %rsp  
+******************************
+
+=======================================================================
+C. To what address does the program attempt to return?
+
+answer: 0x400034
+
+=======================================================================
+D. What register(s) have corrupted value(s) when get_line returns?
+
+answer: %rbx
+=======================================================================
+E. Besides the potential for buffer overflow, what two other things are
+   wrong with the code for get_line?
+
+aswer: The call to malloc should have had strlen(buf)+1 as its argument
+       to also include the terminating character, and the code should
+       also check that the returned value is not equal to NULL.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

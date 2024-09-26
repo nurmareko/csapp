@@ -1,0 +1,62 @@
+struct prob {
+	int *p;
+	struct {
+		int x;
+		int y
+	} s;
+	struct prob *next;
+}
+
+=======================================================================
+
+void sp_init(struct prob *sp) {
+	sp->s.x  = sp->s.y;
+	sp->p    = &(sp->s.x);
+	sp->next = sp;
+}
+
+=======================================================================
+
+A. What are the offsets (in bytes) of the following fields?
+
+	   p: 0
+	 s.x: 8
+	 s.y: 12
+	next: 16
+
+=======================================================================
+
+B. How many total bytes does the structure require?
+
+answer: 24 
+
+=======================================================================
+
+C. The compiler generates the following assembly code for sp_init:
+
+// void sp_init(struct prob *sp)
+// sp in %rdi
+
+1 sp_init:
+2   movl	12(%rdi), %eax	// get sp->s.y
+3   movl	%eax, 8(%rdi)	// sp->s.x = sp->s.y
+4   leaq	8(%rdi), %rax	// get &(sp->s.x)
+5   movq	%rax, (%rdi)	// sp->p = &(sp->s.x)
+6   movq	%rdi, 16(%rdi)	// sp->next = sp
+7   ret
+
+On the basis of this information, fill in the missing expressions in
+the code for sp_init
+
+
+
+
+
+
+
+
+
+
+
+
+

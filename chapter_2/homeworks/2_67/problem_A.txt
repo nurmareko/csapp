@@ -1,0 +1,5 @@
+In what way does our code fail to comply with the c standard?
+
+let w be the size of int, The shift amount should be a value between 0
+and w-1, for some machine that use w < 33 the code on line 4 and 6 will
+raise a warning.

@@ -1,0 +1,32 @@
+long test(long x, long y) {
+	long val = x * 8;
+	if (y > 0) {
+		if (x < y)
+			val = y - x;
+		else
+			val = x & y;
+	} else if (y <= -2)
+		val = x + y;
+	return val;
+}
+
+========================================================================
+
+# long test(long x, long y)
+# x in %rdi, y in %rsi
+test:
+  leaq	0(, %rdi, 8), %rax	#   Compute val = x * 8
+  testq %rsi, %rsi		#   Test y : 0
+  jle .L2			#   If <= goto elseif
+  movq %rsi, %rax		#   
+  subq %rdi, %rax		#   Compute val = y - x
+  movq %rdi, %rdx		#   
+  andq %rsi, %rdx		#   Compute eval = x & y
+  cmpq %rsi, %rdi		#   Compare x : y
+  cmovge %rdx, %rax		#   If >= , val = eval
+  ret				# 
+.L2:				# elseif:
+  addq %rsi, %rdi		#   Compute x += y
+  cmpq $-2, %rsi		#   Compare y : -2
+  cmovle %rdi, %rax		#   If <= val = x + y
+  ret				# 

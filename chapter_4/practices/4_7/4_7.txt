@@ -1,0 +1,2 @@
+The pushq instruction will first copy the operand value to stack, then 
+update the stack pointer %rsp.

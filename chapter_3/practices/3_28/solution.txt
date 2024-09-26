@@ -1,0 +1,39 @@
+long fun_b(unsigned long x) {
+    long val = 0;
+    long i;
+    for( ... ; ... ; ... ) {
+        .
+        .
+        .
+    }
+    return val;
+}
+
+========================================================================
+
+// long fun_b(unsigned long x)
+// x in %rdi
+fun_b:
+  movl		$64, %edx	//   Compute temp_1 = 64		// init-expr
+  movl		$0, %eax	//   Compute val = 0
+.L10:				// loop:
+  movq		%rdi, %rcx	//   Compute temp_2 = x			// body-statement
+  andl		$1, %ecx	//   Compute temp_2  = temp_2 & 1	// .
+  addq		%rax, %rax	//   Compute val = val + val		// .
+  orq		%rcx, %rax	//   Compute val = val | temp_2		// .
+  shrq		%rdi		//   Shift right x by 1			// .
+  subq		$1, %rdx	//   Compute temp_1 = temp_1 - 1	// update-expr
+  jne		.L10		//   If temp_1 != 0, goto loop		// test-expr
+  rep; ret			//   return val
+
+========================================================================
+
+long fun_b(unsigned long x) {
+    long val = 0;
+    long i;
+    for( i = 64;i;i--) {
+        val = (val * 2) | (x & 1);
+        x >>= 1;
+    }
+    return val;
+}

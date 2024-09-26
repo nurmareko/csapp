@@ -1,0 +1,58 @@
+what the function find_range do?
+  it take one argument x of type float and return range_t base on whether
+  x is negative, zero, positive, or other number.
+
+how does one discern whether a floating point number are negative, zero,
+positive, or other number?
+  ...
+
+what should find_range return when x is the representation of negative
+zero?
+  ...
+
+how can we write find_range in assembly code using only one floating-point
+comparison and using conditional branches?
+  ...
+
+how can we incorporate functions written in assembly code into C programs?
+  ...
+
+how can we test for all 2^32 possible argument values for x?
+  ...
+
+========================================================================
+find_range:
+  Set result = OTHER
+  Compare x:0
+  If <, goto neg
+  If ==, goto zero
+  If >, goto pos
+  return
+neg:
+  Set result = NEG
+  return
+zero:
+  Set result = ZERO
+  return
+pos:
+  Set result = POS
+  return
+
+========================================================================
+find_range:
+  movq		$3, %rax		#   Set result = OTHER
+  vxorps	%xmm1, %xmm1, %xmm1	#   Set %xmm1 = 0
+  vucomiss	%xmm1, %xmm0		#   Compare x:0
+  jb		.L1			#   If <, goto neg
+  je		.L2			#   If ==, goto zero
+  ja		.L3			#   If >, goto pos
+  return				#   return
+.L1					# neg:
+  movq		$0, %rax		#   Set result = NEG
+  return				#   return
+.L2					# zero:
+  movq		$1, %rax		#   Set result = ZERO
+  return				#   return
+.L3					# pos:
+  movq		$2, %rax		#   Set result = POS
+  return				#   return

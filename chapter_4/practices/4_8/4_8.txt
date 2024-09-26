@@ -1,0 +1,4 @@
+The popq instruction will first update the pointer value then copy its
+top of the stack value to its operand destination.
+
+mrmovq (%rsp), %rsp	# this y86-64 instruction will have the same effect

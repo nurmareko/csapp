@@ -1,0 +1,5 @@
+word mem_data = [
+	icode in { IRMMOVQ, IPUSHQ } : valA;
+	icode == ICALL : valP;
+	# Other instructions don't need data
+];
