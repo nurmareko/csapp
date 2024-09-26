@@ -1,0 +1,13 @@
+2 = 1.0 x 2^1
+ε = 2^-23
+ulp(2) = ε x 2^1 = 2^-22
+
+The gap between 2 and the first IEEE single format number larger than 2
+is 2^-22
+
+1024 = 1.0 x 2^10
+ε = 2^-23
+ulp(1024) = ε x 2^10 = 2^-13
+
+The gap between 1024 and the first IEEE single format number larger than
+1024 is 2^-13

@@ -1,0 +1,14 @@
+(a) With sign and modulus system one of the 32 bits is reserve for 
+    representing the sign, and the number zero have two representation
+    that is positive zero and negative zero, let say the two zero are
+    equal, using this system we can represent:
+
+    zero and positive	zero and negative	unique integer
+    2^31		2^31			2^32 - 1
+
+(b) With 2's complement every bits pattern is unique therefore it can
+    represent 2^32 unique integer
+
+For which of these two systems is the representation for zero unique?
+ The 2's complement have unique representation of zero, as for sign
+ and modulus have 2 way to represent zero.

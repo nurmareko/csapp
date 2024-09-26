@@ -1,0 +1,10 @@
+using toy system for example we have Nmax = (1.11) x 2^1 = 3.5
+
+x = 2^2 = 4.0
+
+round mode	round(x)	abserr(x)
+down		3.5		0.5
+up		∞		∞
+to zero		3.5		0.5
+to nearest	∞		∞
+

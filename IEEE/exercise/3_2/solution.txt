@@ -1,0 +1,4 @@
+For 16-bit size 2's complement system for integer x the range of integers
+that can be stored is:
+
+-2^15 <= x <= 2^15 - 1   or   -32768 <= x 32767

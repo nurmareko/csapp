@@ -1,0 +1,4 @@
+After we change all 0 bits to 1s and all 1 bits to 0s we add 1 to the
+result. For example if we flip the bits of the number 1, 2, 3 we get -2,
+-3, -4 respectively. The result is one less than what we want to correct
+it we add 1 resulting -1, -2, -3.

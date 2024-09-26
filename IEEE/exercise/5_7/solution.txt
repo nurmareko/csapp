@@ -1,0 +1,5 @@
+abserr(x) = |round(x) - x| < 2^-(p-1) x 2^E			(5.5)
+
+abserr(x) = |round(x) - x| <= 2^-p x 2^E			(5.6)
+
+the bounds only hold for x in the normalized range

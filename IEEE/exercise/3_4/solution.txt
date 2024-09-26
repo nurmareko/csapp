@@ -1,0 +1,12 @@
+For integer represented using 2's complement the leftmost bit weight is
+-2^31, for an integer to be negative it need to have the leftmost bit
+set to 1.
+
+smallest negative (-2^31)	largest negative (-1)
+(10...0)			(1...1)
+
+smallest positive (1)		largest positive (2^31 - 1)
+(0...01)			(01...1)
+
+zero (0)
+(0...0)

@@ -1,0 +1,27 @@
+if (sign bit of x greater than sign bit of y)
+    then x is less than y
+else if (sign bit of x less than sign bit of y)
+    then x is greater than y
+else if (sign bit of x equal sign bit of y)
+    if (sign bit of x and y is 0)
+        if (exponent field of x greater than exponent field of y)
+            then x is greater than y
+        else if (exponent field of x less than exponent field of y)
+	    then x is less than y
+	else if (exponent field of x equal exponent field of y)
+            if (fraction field of x greater fraction field of y)
+                then x is greater than y
+            else if (fraction field of x less than fraction field of y)
+                then x is less than y
+    else if (sign bit of x and y is 1)
+        if (exponent field of x greater than exponent field of y)
+            then x is less than y
+        else if (exponent field of x less than exponent field of y)
+	    then x is greater than y
+	else if (exponent field of x equal exponent field of y)
+            if (fraction field of x greater fraction field of y)
+                then x is less than y
+            else if (fraction field of x less than fraction field of y)
+                then x is greater than y
+else
+    then x equal y
